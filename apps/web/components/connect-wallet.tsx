@@ -3,31 +3,61 @@
 import { useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { useRouter } from "next/navigation";
-import { checkUserInDatabase } from "@/actions/user";
+import { useWalletModal } from "@solana/wallet-adapter-react-ui";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@workspace/ui/components/dialog";
+import { Button } from "@workspace/ui/components/button";
 
-export function ConnectWallet() {
-  const { publicKey, connected } = useWallet();
-  const router = useRouter();
+interface ConnectWalletProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+}
 
+export function ConnectWallet({ open, onOpenChange }: ConnectWalletProps) {
+  const { connected } = useWallet();
+  const { visible } = useWalletModal(); // 👈 Detect when wallet modal opens
+
+  // Close when Solana wallet modal opens
   useEffect(() => {
-    const verifyUser = async () => {
-      if (connected && publicKey) {
-        const user = await checkUserInDatabase(publicKey.toString());
+    if (visible) {
+      onOpenChange(false);
+    }
+  }, [visible, onOpenChange]);
 
-        if (!user) return;
-
-        if (user.isOnboarded) router.push("/done");
-        else router.push("/onboarding");
-      }
-    };
-
-    verifyUser();
-  }, [ publicKey]);
+  // Optional: also close when connected successfully
+  useEffect(() => {
+    if (connected) {
+      onOpenChange(false);
+    }
+  }, [connected, onOpenChange]);
 
   return (
-    <div className="flex items-center">
-      <WalletMultiButton />
-    </div>
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-[425px] h-auto">
+        <DialogHeader>
+          <DialogTitle>Connect Wallet</DialogTitle>
+          <DialogDescription>
+            Choose a Solana wallet to connect with solDonut.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="flex justify-center py-4">
+          <WalletMultiButton />
+        </div>
+
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }
