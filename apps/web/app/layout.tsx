@@ -8,7 +8,6 @@ import Appbar from "@/components/appbar";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
 
-
 const fontSans = Geist({
   subsets: ["latin"],
   variable: "--font-sans",
@@ -31,7 +30,7 @@ export default function RootLayout({
       >
         <SolanaProvider>
           <Providers>
-            <div className="flex-1 border-l border-r border-dashed  border-white max-w-[1400px] mx-auto w-full">
+            <div className="flex-1 border-l border-r border-dashed  border-white min-w-[1400px] max-w-[1800px] mx-auto w-full">
               <Appbar />
               {children}
               <Toaster />

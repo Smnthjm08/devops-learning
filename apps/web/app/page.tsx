@@ -1,10 +1,11 @@
-"use client";
-
 import { Button } from "@workspace/ui/components/button";
-import { toast } from "sonner";
+import prisma from "@workspace/db";
 
-export default function Page() {
-  toast.success("Welcome to the app!");
+export default async function Page() {
+  console.log("DATABASE_URL:", process.env.DATABASE_URL);
+
+  const data = await prisma.user.findMany();
+  console.log("User data:", data);
 
   return (
     <div className="flex items-center justify-center min-h-svh">

@@ -30,7 +30,7 @@ export const SolanaProvider: FC<SolanaProviderProps> = ({ children }) => {
 
   const wallets = useMemo(
     () => [new PhantomWalletAdapter(), new KeystoneWalletAdapter()],
-    []
+    [],
   );
 
   return (
