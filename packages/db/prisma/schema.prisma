@@ -16,7 +16,7 @@ datasource db {
 
 model User {
   id          String   @id @default(cuid())
-  email       String   @unique
+  email       String?
   publicKey   String   @unique
   isOnboarded Boolean  @default(false)
   discord     String?
