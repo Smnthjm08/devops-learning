@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { useRouter } from "next/navigation";
-import { checkUserInDatabase } from "@/actions/user";
+import { checkUserByPublicKey } from "@/actions/user";
 
 export function ConnectWallet() {
   const { publicKey, connected } = useWallet();
@@ -12,18 +12,24 @@ export function ConnectWallet() {
 
   useEffect(() => {
     const verifyUser = async () => {
-      if (connected && publicKey) {
-        const user = await checkUserInDatabase(publicKey.toString());
+      if (!connected || !publicKey) return;
 
+      try {
+        const user = await checkUserByPublicKey(publicKey.toString());
         if (!user) return;
 
-        if (user.isOnboarded) router.push("/done");
-        else router.push("/onboarding");
+        if (user.isOnboarded) {
+          router.push("/app");
+        } else {
+          router.push("/onboarding");
+        }
+      } catch (err) {
+        console.error("Error verifying user:", err);
       }
     };
 
     verifyUser();
-  }, [ publicKey]);
+  }, [connected, publicKey, router]);
 
   return (
     <div className="flex items-center">

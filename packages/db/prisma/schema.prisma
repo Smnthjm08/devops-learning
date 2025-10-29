@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client"
   output   = "../generated/prisma"
@@ -16,17 +10,29 @@ datasource db {
 
 model User {
   id          String   @id @default(cuid())
-  email       String?
-  publicKey   String   @unique
-  isOnboarded Boolean  @default(false)
-  discord     String?
-  twitter     String?
-  website     String?
-  bio         String?
+  email       String?  @unique
   name        String?
+  username    String?  @unique
+  publicKey   String   @unique
+  bio         String?
+  isOnboarded Boolean  @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
-  @@unique([email, publicKey])
+  socials     UserSocials?
+
   @@map("user")
 }
+
+model UserSocials {
+  id        String   @id @default(cuid())
+  github    String?
+  twitter   String?
+  discord   String?
+  website   String?
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_socials")
+}
+

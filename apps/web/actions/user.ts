@@ -2,7 +2,8 @@
 
 import prisma from "@workspace/db";
 
-export async function checkUserInDatabase(publicKey: string) {
+
+export async function checkUserByPublicKey(publicKey: string) {
   try {
     if (!publicKey) throw new Error("Missing public key");
 
@@ -19,13 +20,14 @@ export async function checkUserInDatabase(publicKey: string) {
       });
     }
 
-    // ✅ Return only user data — no redirects
     return {
       publicKey: user.publicKey,
       isOnboarded: user.isOnboarded,
     };
-  } catch (error) {
-    console.error("Error in checkUserInDatabase:", error);
-    throw new Error("Failed to check user in database");
+  } catch (error: any) {
+    console.error("Error in checkUserByPublicKey:", error);
+    throw error;
   }
 }
+
+

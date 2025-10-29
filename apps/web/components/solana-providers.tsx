@@ -5,10 +5,7 @@ import {
   ConnectionProvider,
   WalletProvider,
 } from "@solana/wallet-adapter-react";
-import {
-  BaseWalletAdapter,
-  WalletAdapterNetwork,
-} from "@solana/wallet-adapter-base";
+import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { clusterApiUrl } from "@solana/web3.js";
 import "@solana/wallet-adapter-react-ui/styles.css";
@@ -21,7 +18,7 @@ interface SolanaProviderProps {
   children: ReactNode;
 }
 
-export const SolanaProvider: FC<SolanaProviderProps> = ({ children }) => {
+export const SolanaProviders: FC<SolanaProviderProps> = ({ children }) => {
   // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'
   const network = WalletAdapterNetwork.Devnet;
 

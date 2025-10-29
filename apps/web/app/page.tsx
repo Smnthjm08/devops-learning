@@ -1,11 +1,8 @@
+"use client";
+
 import { Button } from "@workspace/ui/components/button";
-import prisma from "@workspace/db";
 
-export default async function Page() {
-  console.log("DATABASE_URL:", process.env.DATABASE_URL);
-
-  const data = await prisma.user.findMany();
-  console.log("User data:", data);
+export default function Page() {
 
   return (
     <div className="flex items-center justify-center min-h-svh">

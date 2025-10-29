@@ -1,9 +1,11 @@
+"use client";
+
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "@workspace/ui/globals.css";
 import { Providers } from "@/components/providers";
 import { Toaster } from "@workspace/ui/components/sonner";
-import { SolanaProvider } from "@/components/solana-provider";
+import { SolanaProviders } from "@/components/solana-providers";
 import Appbar from "@/components/appbar";
 
 import "@solana/wallet-adapter-react-ui/styles.css";
@@ -26,18 +28,24 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning suppressContentEditableWarning>
       <body
-        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased `}
+        className={`${fontSans.variable} ${fontMono.variable} font-sans antialiased`}
       >
-        <SolanaProvider>
+        <SolanaProviders>
           <Providers>
-            {/* <div className="flex-1 border-l border-r border-dashed  border-white min-w-[1400px] max-w-[1800px] mx-auto w-full"> */}
-            <div className="flex-1 max-w-[1800px] mx-auto w-full">
+            {/* Full viewport height */}
+            <div className="flex flex-col max-w-[1800px] mx-auto w-full min-h-screen">
+              {/* Keep Appbar normal */}
               <Appbar />
-              {children}
+
+              {/* Content area — allow scrolling but no clipping */}
+              <main className="flex-1 h-[calc(100vh-64px)] overflow-y-auto relative z-0">
+                {children}
+              </main>
+
               <Toaster />
             </div>
           </Providers>
-        </SolanaProvider>
+        </SolanaProviders>
       </body>
     </html>
   );
