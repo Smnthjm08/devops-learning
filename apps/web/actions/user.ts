@@ -2,7 +2,6 @@
 
 import prisma from "@workspace/db";
 
-
 export async function checkUserByPublicKey(publicKey: string) {
   try {
     if (!publicKey) throw new Error("Missing public key");
@@ -29,5 +28,3 @@ export async function checkUserByPublicKey(publicKey: string) {
     throw error;
   }
 }
-
-
