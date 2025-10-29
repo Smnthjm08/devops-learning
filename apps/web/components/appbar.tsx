@@ -1,15 +1,36 @@
+// apps/web/components/connect-wallet.tsx
 "use client";
 
+import { useEffect } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useRouter } from "next/navigation";
+import { checkUserByPublicKey } from "@/actions/user";
 import Link from "next/link";
 import Image from "next/image";
-import dynamic from "next/dynamic";
-
-const ConnectWallet = dynamic(
-  () => import("./connect-wallet").then((mod) => mod.ConnectWallet),
-  { ssr: false },
-);
+import { ConnectWallet } from "./connect-wallet";
 
 export default function Appbar() {
+  const { publicKey, connected } = useWallet();
+  const router = useRouter();
+
+  useEffect(() => {
+    const verifyUser = async () => {
+      if (!connected || !publicKey) return;
+
+      try {
+        const user = await checkUserByPublicKey(publicKey.toString());
+
+        if (user?.isOnboarded) router.push("/app");
+        else router.push("/onboarding");
+      } catch (err) {
+        console.error("Error verifying user:", err);
+      }
+    };
+
+    verifyUser();
+  }, [connected, publicKey, router]);
+
   return (
     <header className="flex items-center justify-between px-8 py-3 border-gray-500 h-16 shadow-sm">
       <Link
