@@ -14,10 +14,6 @@ export default function OnboardPage() {
   const { connection } = useConnection();
   const router = useRouter();
 
-  // if(!publicKey || !connection) {
-
-  // }
-
   const [formData, setFormData] = useState({
     name: "",
     username: "",

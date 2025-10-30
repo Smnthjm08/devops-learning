@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { checkUserByPublicKey } from "@/actions/user";
+import prisma from "@workspace/db";
 
 export async function POST(req: Request) {
   try {
@@ -12,9 +12,25 @@ export async function POST(req: Request) {
       );
     }
 
-    const user = await checkUserByPublicKey(publicKey);
+    let user = await prisma.user.findUnique({
+      where: { publicKey },
+    });
 
-    return NextResponse.json({ user });
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          publicKey,
+          isOnboarded: false,
+        },
+      });
+    }
+
+    return NextResponse.json({
+      user: {
+        publicKey: user.publicKey,
+        isOnboarded: user.isOnboarded,
+      },
+    });
   } catch (error) {
     console.error("Error verifying user:", error);
     return NextResponse.json(

@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-import { useEffect, useState } from "react";
 
 import { useWallet } from "@solana/wallet-adapter-react";
 import { Button } from "@workspace/ui/components/button";
@@ -15,19 +14,6 @@ export default function ProtectedLayout({
 }) {
   const { publicKey, connected } = useWallet();
   const router = useRouter();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <div className="flex h-[calc(100vh-64px)] items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
-      </div>
-    );
-  }
 
   if (!connected || !publicKey) {
     return (
@@ -47,7 +33,7 @@ export default function ProtectedLayout({
   return (
     <div className="flex h-[calc(100vh-64px)]">
       <AppSidebar />
-      <main className="flex-1 overflow-y-auto">{children}</main>
+      <main className="flex-1 overflow-y-auto p-8">{children}</main>
     </div>
   );
 }
