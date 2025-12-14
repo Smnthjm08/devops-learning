@@ -1,26 +1,15 @@
 {
-  "name": "sol-donut",
-  "version": "0.0.1",
-  "private": true,
-  "scripts": {
-    "build": "turbo build",
-    "postinstall": "cd packages/db && npx prisma generate",
-    "dev": "turbo dev",
-    "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
-  },
+  "name": "aws-ecs",
+  "module": "src/index.ts",
+  "type": "module",
   "devDependencies": {
-    "@workspace/eslint-config": "workspace:*",
-    "@workspace/typescript-config": "workspace:*",
-    "prettier": "^3.6.2",
-    "turbo": "^2.5.5",
-    "typescript": "5.7.3"
+    "@types/bun": "latest"
   },
-  "packageManager": "pnpm@10.4.1",
-  "engines": {
-    "node": ">=20"
+  "peerDependencies": {
+    "typescript": "^5"
   },
   "dependencies": {
-    "dotenv-cli": "^10.0.0"
+    "@types/express": "^5.0.6",
+    "express": "^5.2.1"
   }
 }
