@@ -2,13 +2,19 @@
   "name": "aws-ecs",
   "module": "src/index.ts",
   "type": "module",
+  "scripts": {
+    "dev": "bun --watch src/index.ts"
+  },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "prisma": "^7.2.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
     "@types/express": "^5.0.6",
     "express": "^5.2.1"
   }
